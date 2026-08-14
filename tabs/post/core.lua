@@ -22,11 +22,11 @@ local function gsc_text(price, which)
 	if not price or price <= 0 then return '' end
 	local gold, silver, copper = money.to_gsc(price)
 	if which == 1 then
-		return gold > 0 and (GOLD_COLOR .. gold .. FONT_COLOR_CODE_CLOSE .. 'g') or ''
+		return gold > 0 and (GOLD_COLOR .. gold .. 'g' .. FONT_COLOR_CODE_CLOSE) or ''
 	elseif which == 2 then
-		return silver > 0 and (SILVER_COLOR .. silver .. FONT_COLOR_CODE_CLOSE .. 's') or ''
+		return silver > 0 and (SILVER_COLOR .. silver .. 's' .. FONT_COLOR_CODE_CLOSE) or ''
 	else
-		return copper > 0 and (COPPER_COLOR .. copper .. FONT_COLOR_CODE_CLOSE .. 'c') or ''
+		return copper > 0 and (COPPER_COLOR .. copper .. 'c' .. FONT_COLOR_CODE_CLOSE) or ''
 	end
 end
 

@@ -20,11 +20,11 @@ local function gsc_text(price, which, empty)
 	if not price or price <= 0 then return empty end
 	local gold, silver, copper = money.to_gsc(price)
 	if which == 1 then
-		if gold > 0 then return GOLD_COLOR .. gold .. FONT_COLOR_CODE_CLOSE .. 'g' end
+		if gold > 0 then return GOLD_COLOR .. gold .. 'g' .. FONT_COLOR_CODE_CLOSE end
 	elseif which == 2 then
-		if silver > 0 then return SILVER_COLOR .. silver .. FONT_COLOR_CODE_CLOSE .. 's' end
+		if silver > 0 then return SILVER_COLOR .. silver .. 's' .. FONT_COLOR_CODE_CLOSE end
 	else
-		if copper > 0 then return COPPER_COLOR .. copper .. FONT_COLOR_CODE_CLOSE .. 'c' end
+		if copper > 0 then return COPPER_COLOR .. copper .. 'c' .. FONT_COLOR_CODE_CLOSE end
 	end
 	return ''
 end
@@ -606,7 +606,7 @@ local methods = {
             price_per_unit = not price_per_unit
             for _, cell in rt.headCells do
                 if cell.info.isPrice then
-                    cell:SetText(cell.info.title[price_per_unit and 1 or 2])
+                    cell:SetText(cell.info.title)
                 end
             end
             rt:SetSort()
@@ -961,7 +961,7 @@ function M.new(parent, rows, columns)
     rt:SetScript('OnShow', function()
         for _, cell in this.headCells do
             if cell.info.isPrice then
-                cell:SetText(cell.info.title[price_per_unit and 1 or 2])
+                cell:SetText(cell.info.title)
             end
         end
     end)
@@ -1013,7 +1013,7 @@ function M.new(parent, rows, columns)
         text:SetFont(gui.font, 12)
         text:SetTextColor(aux.color.label.enabled())
         cell:SetFontString(text)
-        if not column.isPrice then cell:SetText(column.title or '') end -- TODO
+        cell:SetText(column.title or '')
         text:SetAllPoints()
 
         local tex = cell:CreateTexture()
