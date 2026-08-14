@@ -57,64 +57,41 @@ function M.to_string2(money, exact, color)
 end
 
 function M.to_string(money, pad, trim, _, no_color)
-    local is_negative = money < 0
-    money = abs(money)
-    local gold, silver, copper = to_gsc(money)
+	local is_negative = money < 0
+	money = abs(money)
+	local gold, silver, copper = to_gsc(money)
 
-    local gold_color = '|cffffd100'
-    local silver_color = '|cff98b0e0'
-    local copper_color = '|cffc8602c'
+	local gold_color = '|cffffd100'
+	local silver_color = '|cff98b0e0'
+	local copper_color = '|cffc8602c'
 
-    local gold_text, silver_text, copper_text
+	local gold_text, silver_text, copper_text
 
-    if no_color then
-        gold_text, silver_text, copper_text = 'g', 's', 'c'
-    else
-        gold_text = gold_color .. 'g|r'
-        silver_text = silver_color .. 's|r'
-        copper_text = copper_color .. 'c|r'
-    end
+	if no_color then
+		gold_text, silver_text, copper_text = 'g', 's', 'c'
+	else
+		gold_text = gold_color .. 'g|r'
+		silver_text = silver_color .. 's|r'
+		copper_text = copper_color .. 'c|r'
+	end
 
-    local text
+	local parts = {}
+	if gold > 0 then
+		tinsert(parts, gold_color .. format('%d', gold) .. FONT_COLOR_CODE_CLOSE .. gold_text)
+	end
+	if silver > 0 then
+		tinsert(parts, silver_color .. format('%d', silver) .. FONT_COLOR_CODE_CLOSE .. silver_text)
+	end
+	if copper > 0 or (table.getn(parts) == 0) then
+		tinsert(parts, copper_color .. format('%d', copper) .. FONT_COLOR_CODE_CLOSE .. copper_text)
+	end
+	local text = aux.join(parts, ' ')
 
-    if trim or (pad and no_color) then
-        local parts = {}
-        if gold > 0 then
-            tinsert(parts, gold_color .. format('%d', gold) .. FONT_COLOR_CODE_CLOSE .. gold_text)
-        end
-        if silver > 0 then
-            tinsert(parts, silver_color .. format('%d', silver) .. FONT_COLOR_CODE_CLOSE .. silver_text)
-        end
-        if copper > 0 or (table.getn(parts) == 0) then
-            tinsert(parts, copper_color .. format('%d', copper) .. FONT_COLOR_CODE_CLOSE .. copper_text)
-        end
-        text = aux.join(parts, ' ')
-    else
-        local parts = {}
-        local function part(value, width, color, text)
-            local str = format('%0' .. width .. 'd', value)
-            if value > 0 then
-                local i = 1
-                while i <= width and strsub(str, i, i) == '0' do
-                    i = i + 1
-                end
-                local prefix = i > 1 and ('|cffa0a0a0' .. strsub(str, 1, i - 1) .. FONT_COLOR_CODE_CLOSE) or ''
-                return prefix .. color .. strsub(str, i) .. FONT_COLOR_CODE_CLOSE .. text
-            else
-                return string.rep(' ', width + 1)
-            end
-        end
-        tinsert(parts, part(gold, 3, gold_color, gold_text))
-        tinsert(parts, part(silver, 2, silver_color, silver_text))
-        tinsert(parts, part(copper, 2, copper_color, copper_text))
-        text = aux.join(parts, ' ')
-    end
+	if is_negative then
+		text = '-' .. text
+	end
 
-    if is_negative then
-        text = '-' .. text
-    end
-
-    return text
+	return text
 end
 
 function M.from_string(value)
