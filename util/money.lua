@@ -91,17 +91,22 @@ function M.to_string(money, pad, trim, _, no_color)
         text = aux.join(parts, ' ')
     else
         local parts = {}
-        local function padded(value, width)
-            if value > 0 then
-                local num = tostring(value)
-                return string.rep('　', width - strlen(num)) .. num
+        local function padded(value, width, color)
+            local str = format('%0' .. width .. 'd', value)
+            local i = 1
+            while i <= width and strsub(str, i, i) == '0' do
+                i = i + 1
+            end
+            if i > width then
+                return '|cffa0a0a0' .. str .. FONT_COLOR_CODE_CLOSE
             else
-                return string.rep('　', width)
+                local prefix = i > 1 and ('|cffa0a0a0' .. strsub(str, 1, i - 1) .. FONT_COLOR_CODE_CLOSE) or ''
+                return prefix .. color .. strsub(str, i) .. FONT_COLOR_CODE_CLOSE
             end
         end
-        tinsert(parts, gold_color .. padded(gold, 3) .. FONT_COLOR_CODE_CLOSE .. gold_text)
-        tinsert(parts, silver_color .. padded(silver, 2) .. FONT_COLOR_CODE_CLOSE .. silver_text)
-        tinsert(parts, copper_color .. padded(copper, 2) .. FONT_COLOR_CODE_CLOSE .. copper_text)
+        tinsert(parts, padded(gold, 3, gold_color) .. gold_text)
+        tinsert(parts, padded(silver, 2, silver_color) .. silver_text)
+        tinsert(parts, padded(copper, 2, copper_color) .. copper_text)
         text = aux.join(parts, ' ')
     end
 
