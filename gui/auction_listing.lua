@@ -228,19 +228,19 @@ M.search_columns = {
         end,
     },
     {
+        title = '',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_bid_price, 1),
+        cmp = bid_cmp,
+    },
+    {
         title = {'竞拍\n(每件)', '竞拍\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
         group = true,
-        fill = price_fill(get_bid_price, 1),
-        cmp = bid_cmp,
-    },
-    {
-        title = '',
-        width = .04,
-        align = 'RIGHT',
-        isPrice = true,
         fill = price_fill(get_bid_price, 2),
         cmp = bid_cmp,
     },
@@ -253,19 +253,19 @@ M.search_columns = {
         cmp = bid_cmp,
     },
     {
+        title = '',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 1, '---'),
+        cmp = buyout_cmp,
+    },
+    {
         title = {'一口价\n(每件)', '一口价\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
         group = true,
-        fill = price_fill(get_buyout_price, 1, '---'),
-        cmp = buyout_cmp,
-    },
-    {
-        title = '',
-        width = .04,
-        align = 'RIGHT',
-        isPrice = true,
         fill = price_fill(get_buyout_price, 2),
         cmp = buyout_cmp,
     },
@@ -360,19 +360,19 @@ M.auctions_columns = {
         end,
     },
     {
+        title = '',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_start_price, 1),
+        cmp = start_cmp,
+    },
+    {
         title = {'竞拍\n(每件)', '竞拍\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
         group = true,
-        fill = price_fill(get_start_price, 1),
-        cmp = start_cmp,
-    },
-    {
-        title = '',
-        width = .04,
-        align = 'RIGHT',
-        isPrice = true,
         fill = price_fill(get_start_price, 2),
         cmp = start_cmp,
     },
@@ -385,19 +385,19 @@ M.auctions_columns = {
         cmp = start_cmp,
     },
     {
+        title = '',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 1, '---'),
+        cmp = buyout_cmp,
+    },
+    {
         title = {'一口价\n(每件)', '一口价\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
         group = true,
-        fill = price_fill(get_buyout_price, 1, '---'),
-        cmp = buyout_cmp,
-    },
-    {
-        title = '',
-        width = .04,
-        align = 'RIGHT',
-        isPrice = true,
         fill = price_fill(get_buyout_price, 2),
         cmp = buyout_cmp,
     },
@@ -503,19 +503,19 @@ M.bids_columns = {
         end,
     },
     {
+        title = '',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_bid_price, 1),
+        cmp = bid_cmp,
+    },
+    {
         title = {'竞拍\n(每件)', '竞拍\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
         group = true,
-        fill = price_fill(get_bid_price, 1),
-        cmp = bid_cmp,
-    },
-    {
-        title = '',
-        width = .04,
-        align = 'RIGHT',
-        isPrice = true,
         fill = price_fill(get_bid_price, 2),
         cmp = bid_cmp,
     },
@@ -528,19 +528,19 @@ M.bids_columns = {
         cmp = bid_cmp,
     },
     {
+        title = '',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 1, '---'),
+        cmp = buyout_cmp,
+    },
+    {
         title = {'一口价\n(每件)', '一口价\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
         group = true,
-        fill = price_fill(get_buyout_price, 1, '---'),
-        cmp = buyout_cmp,
-    },
-    {
-        title = '',
-        width = .04,
-        align = 'RIGHT',
-        isPrice = true,
         fill = price_fill(get_buyout_price, 2),
         cmp = buyout_cmp,
     },
@@ -597,11 +597,6 @@ local methods = {
         weight = (self.contentFrame:GetRight() - self.contentFrame:GetLeft()) / weight
         for i, cell in self.headCells do
             local width = cell.info.width * weight
-            if cell.info.group then
-                width = (cell.info.width + self.headCells[i + 1].info.width + self.headCells[i + 2].info.width) * weight
-            elseif cell.info.isPrice then
-                width = 0
-            end
             cell:SetWidth(width)
             for _, row in self.rows do
                 row.cells[i]:SetWidth(cell.info.width * weight)
