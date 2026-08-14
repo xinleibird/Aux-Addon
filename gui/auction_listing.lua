@@ -11,6 +11,82 @@ local tooltip = require 'aux.core.tooltip'
 
 local price_per_unit = false
 
+local GOLD_COLOR = '|cffffd100'
+local SILVER_COLOR = '|cff98b0e0'
+local COPPER_COLOR = '|cffc8602c'
+
+local function gsc_text(price, which, empty)
+	empty = empty or ''
+	if not price or price <= 0 then return empty end
+	local gold, silver, copper = money.to_gsc(price)
+	if which == 1 then
+		if gold > 0 then return GOLD_COLOR .. gold .. FONT_COLOR_CODE_CLOSE .. 'g' end
+	elseif which == 2 then
+		if silver > 0 then return SILVER_COLOR .. silver .. FONT_COLOR_CODE_CLOSE .. 's' end
+	else
+		if copper > 0 then return COPPER_COLOR .. copper .. FONT_COLOR_CODE_CLOSE .. 'c' end
+	end
+	return ''
+end
+
+local function price_fill(price_fn, which, empty)
+	return function(cell, record)
+		cell.text:SetText(gsc_text(price_fn(record), which, empty))
+	end
+end
+
+local function get_bid_price(record)
+	if record.high_bidder then
+		return price_per_unit and ceil(record.high_bid / record.aux_quantity) or record.high_bid
+	else
+		return price_per_unit and ceil(record.unit_bid_price) or record.bid_price
+	end
+end
+
+local function get_start_price(record)
+	if record.high_bidder then
+		return price_per_unit and ceil(record.high_bid / record.aux_quantity) or record.high_bid
+	else
+		return price_per_unit and ceil(record.start_price / record.aux_quantity) or record.start_price
+	end
+end
+
+local function get_buyout_price(record)
+	return price_per_unit and ceil(record.unit_buyout_price) or record.buyout_price
+end
+
+local function bid_cmp(record_a, record_b, desc)
+	local price_a = get_bid_price(record_a)
+	local price_b = get_bid_price(record_b)
+	if record_a.high_bidder and not record_b.high_bidder then
+		return sort_util.GT
+	elseif record_b.high_bidder and not record_a.high_bidder then
+		return sort_util.LT
+	end
+	if price_a == price_b then
+		if record_a.high_bid == 0 and record_b.high_bid ~= 0 then
+			return sort_util.GT
+		elseif record_b.high_bid == 0 and record_a.high_bid ~= 0 then
+			return sort_util.LT
+		end
+	end
+	return sort_util.compare(price_a, price_b, desc)
+end
+
+local function start_cmp(record_a, record_b, desc)
+	local price_a = get_start_price(record_a)
+	local price_b = get_start_price(record_b)
+	return sort_util.compare(price_a, price_b, desc)
+end
+
+local function buyout_cmp(record_a, record_b, desc)
+	local price_a = get_buyout_price(record_a)
+	local price_b = get_buyout_price(record_b)
+	price_a = price_a > 0 and price_a or (desc and -aux.huge or aux.huge)
+	price_b = price_b > 0 and price_b or (desc and -aux.huge or aux.huge)
+	return sort_util.compare(price_a, price_b, desc)
+end
+
 local HEAD_HEIGHT = 32
 local HEAD_SPACE = -2
 
@@ -134,7 +210,7 @@ M.search_columns = {
     },
     {
         title = '卖家',
-        width = .13,
+        width = .12,
         align = 'CENTER',
         fill = function(cell, record)
             cell.text:SetText(info.is_player(record.owner) and (aux.color.yellow(record.owner)) or (record.owner or '?'))
@@ -152,70 +228,52 @@ M.search_columns = {
         end,
     },
     {
-        title = {'竞拍\n(每件)', '竞拍\n(每组)'},
-        width = .125,
+        title = '金',
+        width = .05,
         align = 'RIGHT',
         isPrice = true,
-        fill = function(cell, record)
-            local price_color
-            if record.high_bidder then
-	            price_color = aux.color.green
-            elseif record.high_bid ~= 0 then
-	            price_color = aux.color.orange
-            end
-            local price
-            if record.high_bidder then
-                price = price_per_unit and ceil(record.high_bid / record.aux_quantity) or record.high_bid
-            else
-                price = price_per_unit and ceil(record.unit_bid_price) or record.bid_price
-            end
-            cell.text:SetText(money.to_string(price, true, false, price_color))
-        end,
-        cmp = function(record_a, record_b, desc)
-            local price_a
-            if record_a.high_bidder then
-                price_a = price_per_unit and record_a.high_bid / record_a.aux_quantity or record_a.high_bid
-            else
-                price_a = price_per_unit and record_a.unit_bid_price or record_a.bid_price
-            end
-            local price_b
-            if record_b.high_bidder then
-                price_b = price_per_unit and record_b.high_bid / record_b.aux_quantity or record_b.high_bid
-            else
-                price_b = price_per_unit and record_b.unit_bid_price or record_b.bid_price
-            end
-            if record_a.high_bidder and not record_b.high_bidder then
-	            return sort_util.GT
-            elseif record_b.high_bidder and not record_a.high_bidder then
-	            return sort_util.LT
-            end
-            if price_a == price_b then
-				if record_a.high_bid == 0 and record_b.high_bid ~= 0 then
-		            return sort_util.GT
-	            elseif record_b.high_bid == 0 and record_a.high_bid ~= 0 then
-		            return sort_util.LT
-	            end
-            end
-            return sort_util.compare(price_a, price_b, desc)
-        end,
+        fill = price_fill(get_bid_price, 1),
+        cmp = bid_cmp,
     },
     {
-        title = {'一口价\n(每件)', '一口价\n(每组)'},
-        width = .125,
+        title = '银',
+        width = .04,
         align = 'RIGHT',
         isPrice = true,
-        fill = function(cell, record)
-            local price = price_per_unit and ceil(record.unit_buyout_price) or record.buyout_price
-            cell.text:SetText(price > 0 and money.to_string(price, true) or '---')
-        end,
-        cmp = function(record_a, record_b, desc)
-            local price_a = price_per_unit and record_a.unit_buyout_price or record_a.buyout_price
-            local price_b = price_per_unit and record_b.unit_buyout_price or record_b.buyout_price
-            price_a = price_a > 0 and price_a or (desc and -aux.huge or aux.huge)
-            price_b = price_b > 0 and price_b or (desc and -aux.huge or aux.huge)
-
-            return sort_util.compare(price_a, price_b, desc)
-        end,
+        fill = price_fill(get_bid_price, 2),
+        cmp = bid_cmp,
+    },
+    {
+        title = '铜',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_bid_price, 3),
+        cmp = bid_cmp,
+    },
+    {
+        title = '金',
+        width = .05,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 1, '---'),
+        cmp = buyout_cmp,
+    },
+    {
+        title = '银',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 2),
+        cmp = buyout_cmp,
+    },
+    {
+        title = '铜',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 3),
+        cmp = buyout_cmp,
     },
     {
         title = '历史价百分位',
@@ -300,52 +358,52 @@ M.auctions_columns = {
         end,
     },
     {
-        title = {'竞拍\n(每件)', '竞拍\n(每组)'},
-        width = .125,
+        title = '金',
+        width = .05,
         align = 'RIGHT',
         isPrice = true,
-        fill = function(cell, record)
-            local price
-            if record.high_bidder then
-                price = price_per_unit and ceil(record.high_bid / record.aux_quantity) or record.high_bid
-            else
-                price = price_per_unit and ceil(record.start_price / record.aux_quantity) or record.start_price
-            end
-            cell.text:SetText(money.to_string(price, true))
-        end,
-        cmp = function(record_a, record_b, desc)
-            local price_a
-            if record_a.high_bidder then
-                price_a = price_per_unit and record_a.high_bid / record_a.aux_quantity or record_a.high_bid
-            else
-                price_a = price_per_unit and record_a.start_price / record_b.aux_quantity or record_a.start_price
-            end
-            local price_b
-            if record_b.high_bidder then
-                price_b = price_per_unit and record_b.high_bid / record_b.aux_quantity or record_b.high_bid
-            else
-                price_b = price_per_unit and record_b.start_price / record_b.aux_quantity or record_b.start_price
-            end
-            return sort_util.compare(price_a, price_b, desc)
-        end,
+        fill = price_fill(get_start_price, 1),
+        cmp = start_cmp,
     },
     {
-        title = {'一口价\n(每件)', '一口价\n(每组)'},
-        width = .125,
+        title = '银',
+        width = .04,
         align = 'RIGHT',
         isPrice = true,
-        fill = function(cell, record)
-            local price = price_per_unit and ceil(record.unit_buyout_price) or record.buyout_price
-            cell.text:SetText(price > 0 and money.to_string(price, true) or '---')
-        end,
-        cmp = function(record_a, record_b, desc)
-            local price_a = price_per_unit and record_a.unit_buyout_price or record_a.buyout_price
-            local price_b = price_per_unit and record_b.unit_buyout_price or record_b.buyout_price
-            price_a = price_a > 0 and price_a or (desc and -aux.huge or aux.huge)
-            price_b = price_b > 0 and price_b or (desc and -aux.huge or aux.huge)
-
-            return sort_util.compare(price_a, price_b, desc)
-        end,
+        fill = price_fill(get_start_price, 2),
+        cmp = start_cmp,
+    },
+    {
+        title = '铜',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_start_price, 3),
+        cmp = start_cmp,
+    },
+    {
+        title = '金',
+        width = .05,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 1, '---'),
+        cmp = buyout_cmp,
+    },
+    {
+        title = '银',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 2),
+        cmp = buyout_cmp,
+    },
+    {
+        title = '铜',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 3),
+        cmp = buyout_cmp,
     },
     {
         title = '最高竞价人',
@@ -423,7 +481,7 @@ M.bids_columns = {
     },
     {
         title = '卖家',
-        width = .13,
+        width = .12,
         align = 'CENTER',
         fill = function(cell, record)
             cell.text:SetText(info.is_player(record.owner) and (aux.color.yellow(record.owner)) or (record.owner or '?'))
@@ -441,52 +499,52 @@ M.bids_columns = {
         end,
     },
     {
-        title = {'竞拍\n(每件)', '竞拍\n(每组)'},
-        width = .125,
+        title = '金',
+        width = .05,
         align = 'RIGHT',
         isPrice = true,
-        fill = function(cell, record)
-            local price
-            if record.high_bidder then
-                price = price_per_unit and ceil(record.high_bid / record.aux_quantity) or record.high_bid
-            else
-                price = price_per_unit and ceil(record.unit_bid_price) or record.bid_price
-            end
-            cell.text:SetText(money.to_string(price))
-        end,
-        cmp = function(record_a, record_b, desc)
-            local price_a
-            if record_a.high_bidder then
-                price_a = price_per_unit and record_a.high_bid / record_a.aux_quantity or record_a.high_bid
-            else
-                price_a = price_per_unit and record_a.unit_bid_price or record_a.bid_price
-            end
-            local price_b
-            if record_b.high_bidder then
-                price_b = price_per_unit and record_b.high_bid / record_b.aux_quantity or record_b.high_bid
-            else
-                price_b = price_per_unit and record_b.unit_bid_price or record_b.bid_price
-            end
-            return sort_util.compare(price_a, price_b, desc)
-        end,
+        fill = price_fill(get_bid_price, 1),
+        cmp = bid_cmp,
     },
     {
-        title = {'一口价\n(每件)', '一口价\n(每组)'},
-        width = .125,
+        title = '银',
+        width = .04,
         align = 'RIGHT',
         isPrice = true,
-        fill = function(cell, record)
-            local price = price_per_unit and ceil(record.unit_buyout_price) or record.buyout_price
-            cell.text:SetText(price > 0 and money.to_string(price, true) or '---')
-        end,
-        cmp = function(record_a, record_b, desc)
-            local price_a = price_per_unit and record_a.unit_buyout_price or record_a.buyout_price
-            local price_b = price_per_unit and record_b.unit_buyout_price or record_b.buyout_price
-            price_a = price_a > 0 and price_a or (desc and -aux.huge or aux.huge)
-            price_b = price_b > 0 and price_b or (desc and -aux.huge or aux.huge)
-
-            return sort_util.compare(price_a, price_b, desc)
-        end,
+        fill = price_fill(get_bid_price, 2),
+        cmp = bid_cmp,
+    },
+    {
+        title = '铜',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_bid_price, 3),
+        cmp = bid_cmp,
+    },
+    {
+        title = '金',
+        width = .05,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 1, '---'),
+        cmp = buyout_cmp,
+    },
+    {
+        title = '银',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 2),
+        cmp = buyout_cmp,
+    },
+    {
+        title = '铜',
+        width = .04,
+        align = 'RIGHT',
+        isPrice = true,
+        fill = price_fill(get_buyout_price, 3),
+        cmp = buyout_cmp,
     },
     {
         title = '状态',

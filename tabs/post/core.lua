@@ -14,6 +14,22 @@ local item_listing = require 'aux.gui.item_listing'
 local al = require 'aux.gui.auction_listing'
 local gui = require 'aux.gui'
 
+local GOLD_COLOR = '|cffffd100'
+local SILVER_COLOR = '|cff98b0e0'
+local COPPER_COLOR = '|cffc8602c'
+
+local function gsc_text(price, which)
+	if not price or price <= 0 then return '' end
+	local gold, silver, copper = money.to_gsc(price)
+	if which == 1 then
+		return gold > 0 and (GOLD_COLOR .. gold .. FONT_COLOR_CODE_CLOSE .. 'g') or ''
+	elseif which == 2 then
+		return silver > 0 and (SILVER_COLOR .. silver .. FONT_COLOR_CODE_CLOSE .. 's') or ''
+	else
+		return copper > 0 and (COPPER_COLOR .. copper .. FONT_COLOR_CODE_CLOSE .. 'c') or ''
+	end
+end
+
 local tab = aux.tab '出售'
 
 local settings_schema = {'tuple', '#', {duration='number'}, {start_price='number'}, {buyout_price='number'}, {hidden='boolean'}}
@@ -124,14 +140,15 @@ function update_auction_listing(listing, records, reference)
 		local historical_value = history.value(selected_item.key)
 		local stack_size = effective_stack_size()
 		for _, record in records[selected_item.key] or T.empty do
-			local price_color = undercut(record, effective_stack_size(), listing == 'bid') < reference and aux.color.red
 			local price = record.unit_price * (listing == 'bid' and record.stack_size / effective_stack_size() or 1)
 			tinsert(rows, T.map(
 				'cols', T.list(
 				T.map('value', record.own and aux.color.green(record.count) or record.count),
 				T.map('value', al.time_left(record.duration)),
 				T.map('value', record.stack_size == stack_size and aux.color.green(record.stack_size) or record.stack_size),
-				T.map('value', money.to_string(price, true, nil, price_color)),
+				T.map('value', gsc_text(price, 1)),
+				T.map('value', gsc_text(price, 2)),
+				T.map('value', gsc_text(price, 3)),
 				T.map('value', historical_value and gui.percentage_historical(aux.round(price / historical_value * 100)) or '---')
 			),
 				'record', record
@@ -143,7 +160,9 @@ function update_auction_listing(listing, records, reference)
 				T.map('value', '---'),
 				T.map('value', '---'),
 				T.map('value', '---'),
-				T.map('value', money.to_string(historical_value, true, nil, aux.color.green)),
+				T.map('value', gsc_text(historical_value, 1)),
+				T.map('value', gsc_text(historical_value, 2)),
+				T.map('value', gsc_text(historical_value, 3)),
 				T.map('value', historical_value and gui.percentage_historical(100) or '---')
 			),
 				'record', T.map('historical_value', true, 'stack_size', stack_size, 'unit_price', historical_value, 'own', true)
