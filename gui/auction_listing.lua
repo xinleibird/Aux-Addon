@@ -228,10 +228,11 @@ M.search_columns = {
         end,
     },
     {
-        title = '竞拍',
+        title = {'竞拍\n(每件)', '竞拍\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
+        group = true,
         fill = price_fill(get_bid_price, 1),
         cmp = bid_cmp,
     },
@@ -252,10 +253,11 @@ M.search_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '一口价',
+        title = {'一口价\n(每件)', '一口价\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
+        group = true,
         fill = price_fill(get_buyout_price, 1, '---'),
         cmp = buyout_cmp,
     },
@@ -358,10 +360,11 @@ M.auctions_columns = {
         end,
     },
     {
-        title = '竞拍',
+        title = {'竞拍\n(每件)', '竞拍\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
+        group = true,
         fill = price_fill(get_start_price, 1),
         cmp = start_cmp,
     },
@@ -382,10 +385,11 @@ M.auctions_columns = {
         cmp = start_cmp,
     },
     {
-        title = '一口价',
+        title = {'一口价\n(每件)', '一口价\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
+        group = true,
         fill = price_fill(get_buyout_price, 1, '---'),
         cmp = buyout_cmp,
     },
@@ -499,10 +503,11 @@ M.bids_columns = {
         end,
     },
     {
-        title = '竞拍',
+        title = {'竞拍\n(每件)', '竞拍\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
+        group = true,
         fill = price_fill(get_bid_price, 1),
         cmp = bid_cmp,
     },
@@ -523,10 +528,11 @@ M.bids_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '一口价',
+        title = {'一口价\n(每件)', '一口价\n(每组)'},
         width = .05,
         align = 'RIGHT',
         isPrice = true,
+        group = true,
         fill = price_fill(get_buyout_price, 1, '---'),
         cmp = buyout_cmp,
     },
@@ -591,8 +597,8 @@ local methods = {
         weight = (self.contentFrame:GetRight() - self.contentFrame:GetLeft()) / weight
         for i, cell in self.headCells do
             local width = cell.info.width * weight
-            if cell.info.isPrice and cell.info.title ~= '' then
-                width = width * 3
+            if cell.info.group then
+                width = (cell.info.width + self.headCells[i + 1].info.width + self.headCells[i + 2].info.width) * weight
             elseif cell.info.isPrice then
                 width = 0
             end
@@ -610,8 +616,8 @@ local methods = {
         if button == 'RightButton' and rt.headCells[this.columnIndex].info.isPrice then
             price_per_unit = not price_per_unit
             for _, cell in rt.headCells do
-                if cell.info.isPrice then
-                    cell:SetText(cell.info.title)
+                if cell.info.group then
+                    cell:SetText(cell.info.title[price_per_unit and 1 or 2])
                 end
             end
             rt:SetSort()
@@ -965,8 +971,8 @@ function M.new(parent, rows, columns)
 
     rt:SetScript('OnShow', function()
         for _, cell in this.headCells do
-            if cell.info.isPrice then
-                cell:SetText(cell.info.title)
+            if cell.info.group then
+                cell:SetText(cell.info.title[price_per_unit and 1 or 2])
             end
         end
     end)
@@ -1018,7 +1024,11 @@ function M.new(parent, rows, columns)
         text:SetFont(gui.font, 12)
         text:SetTextColor(aux.color.label.enabled())
         cell:SetFontString(text)
-        cell:SetText(column.title or '')
+        if column.group then
+            cell:SetText(column.title[price_per_unit and 1 or 2])
+        else
+            cell:SetText(column.title or '')
+        end
         text:SetAllPoints()
 
         local tex = cell:CreateTexture()
