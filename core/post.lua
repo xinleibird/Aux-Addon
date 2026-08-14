@@ -127,7 +127,7 @@ function post_auction(slot, k)
 			if kz_daily == 1 and vendor_price > 0 then 
 				if tonumber(history.value(state.item_key)) < 1.35 * vendor_price 
 				or tonumber(history.market_value(state.item_key)) < 1.35 * vendor_price then
-					print("AUX: 自动定价建议卖给商人！")
+					print("AUX: 自动定价建议卖给商店！")
 					return stop()
 				end
 			end

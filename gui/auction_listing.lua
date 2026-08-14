@@ -410,11 +410,11 @@ M.auctions_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = '最高竞价人',
+        title = '最高出价人',
         width = .21,
         align = 'CENTER',
         fill = function(cell, record)
-            cell.text:SetText(record.high_bidder or aux.color.red '无竞价')
+            cell.text:SetText(record.high_bidder or aux.color.red '无出价')
         end,
         cmp = function(record_a, record_b, desc)
             if not record_a.high_bidder and not record_b.high_bidder then

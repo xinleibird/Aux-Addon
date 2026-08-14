@@ -30,7 +30,7 @@ local function gsc_text(price, which)
 	end
 end
 
-local tab = aux.tab '出售'
+local tab = aux.tab '上拍'
 
 local settings_schema = {'tuple', '#', {duration='number'}, {start_price='number'}, {buyout_price='number'}, {hidden='boolean'}}
 
@@ -420,7 +420,7 @@ do
     local item_price = unit_price and unit_price * stack_size or nil
     local total_price = item_price and item_price * stack_count or nil
     local formatted_item = item_price and money.to_string(item_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("?")
-    local formatted_total = total_price and money.to_string(total_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("无出售价格")
+    local formatted_total = total_price and money.to_string(total_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("无上拍价格")
 
     local text
     if stack_count == 1 then
@@ -429,7 +429,7 @@ do
         text = formatted_item .. " / " .. formatted_total
     end
 
-    vendor_price_label:SetText("商人售价：" .. text)
+    vendor_price_label:SetText("商店售价：" .. text)
 end
 
 

@@ -136,7 +136,7 @@ end
 do
     local btn = gui.button(frame.parameters)
     btn:SetPoint('TOPLEFT', status_bar, 'TOPRIGHT', 5, 0)
-    btn:SetText('出售')
+    btn:SetText('上拍')
     btn:SetScript('OnClick', post_auctions)
     post_button = btn
 end
@@ -218,7 +218,7 @@ do
     dropdown:SetWidth(82)
     local label = gui.label(dropdown, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 2, 1)
-    label:SetText('时限')
+    label:SetText('时长')
     UIDropDownMenu_Initialize(dropdown, initialize_duration_dropdown)
     dropdown:SetScript('OnShow', function()
         UIDropDownMenu_Initialize(this, initialize_duration_dropdown)

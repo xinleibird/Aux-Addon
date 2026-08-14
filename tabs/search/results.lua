@@ -154,7 +154,7 @@ function start_real_time_scan(query, search, continuation)
 		auto_bid_validator = search.auto_bid_validator,
 		on_scan_start = function()
 			search.status_bar:update_status(.9999, .9999)
-			search.status_bar:set_text('扫描的最后一页...')
+			search.status_bar:set_text('正在扫描最后一页...')
 		end,
 		on_page_loaded = function(_, _, last_page)
 			next_page = last_page

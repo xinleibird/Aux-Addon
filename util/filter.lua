@@ -337,7 +337,7 @@ function M.parse_filter_string(str)
                     elseif type(input_type) == 'table' then
                         return nil, '无效的选择 ' .. parts[i], input_type
                     else
-                        return nil, '无效的输入 ' .. parts[i] .. '. Expecting: ' .. input_type
+                        return nil, '无效的输入 ' .. parts[i] .. '。应为: ' .. input_type
                     end
                 end
                 tinsert(post_filter, T.list('filter', parts[i], parts[i + 1]))
@@ -388,7 +388,7 @@ function M.query(filter_string)
         tinsert(suggestions, 'and')
         tinsert(suggestions, 'or')
         tinsert(suggestions, 'not')
-        return nil, suggestions, '格式不正确的表达'
+        return nil, suggestions, '表达式格式错误'
     end
 
     return {

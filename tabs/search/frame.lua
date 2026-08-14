@@ -220,7 +220,7 @@ end
 do
     local btn = gui.button(frame.results)
     btn:SetPoint('TOPLEFT', status_bar_frame, 'TOPRIGHT', 5, 0)
-    btn:SetText('竞标')
+    btn:SetText('出价')
     btn:Disable()
     bid_button = btn
 end
@@ -300,7 +300,7 @@ do
     checkbox:SetScript('OnClick', update_form)
     local label = gui.label(checkbox, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', checkbox, 'TOPLEFT', -34, -14)
-    label:SetText('精确的')
+    label:SetText('精确匹配')
     exact_checkbox = checkbox
 end
 do
@@ -397,7 +397,7 @@ do
     dropdown:SetWidth(300)
     local label = gui.label(dropdown, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 2, 0)
-    label:SetText('物品部位')
+    label:SetText('装备部位')
     UIDropDownMenu_Initialize(dropdown, initialize_slot_dropdown)
     dropdown:SetScript('OnShow', function()
         UIDropDownMenu_Initialize(this, initialize_slot_dropdown)
@@ -410,7 +410,7 @@ do
     dropdown:SetWidth(300)
     local label = gui.label(dropdown, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 2, 0)
-    label:SetText('最小品质')
+    label:SetText('最低品质')
     UIDropDownMenu_Initialize(dropdown, initialize_quality_dropdown)
     dropdown:SetScript('OnShow', function()
         UIDropDownMenu_Initialize(this, initialize_quality_dropdown)
@@ -428,7 +428,7 @@ do
     _G[dropdown:GetName() .. 'Text']:Hide()
     local label = gui.label(dropdown, gui.font_size.medium)
     label:SetPoint('RIGHT', dropdown, 'LEFT', -5, 0)
-    label:SetText('构件')
+    label:SetText('组件')
     filter_dropdown = dropdown
 end
 do

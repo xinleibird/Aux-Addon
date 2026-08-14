@@ -57,7 +57,7 @@ function M.extend_tooltip(tooltip, link, quantity)
         local distribution = disenchant.distribution(item_info.slot, item_info.quality, item_info.level, item_id)
         if getn(distribution) > 0 then
             if settings.disenchant_distribution then
-                tooltip:AddLine('分解物品:', {r=1, g=1, b=1})
+                tooltip:AddLine('分解为:', {r=1, g=1, b=1})
                 sort(distribution, function(a,b) return a.probability > b.probability end)
                 for _, event in ipairs(distribution) do
                     tooltip:AddLine(format('  %s%% %s (%s-%s)', event.probability * 100, info.display_name(event.item_id, true) or 'item:' .. event.item_id, event.min_quantity, event.max_quantity), {r=1, g=1, b=1})
@@ -65,7 +65,7 @@ function M.extend_tooltip(tooltip, link, quantity)
             end
             if settings.disenchant_value then
                 local disenchant_value = disenchant.value(item_info.slot, item_info.quality, item_info.level, item_id)
-                tooltip:AddLine('分解物品价格: ' .. (disenchant_value and money.to_string(disenchant_value) or UNKNOWN), {r=1, g=1, b=1})
+                tooltip:AddLine('分解价值: ' .. (disenchant_value and money.to_string(disenchant_value) or UNKNOWN), {r=1, g=1, b=1})
             end
         end
     end
