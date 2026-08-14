@@ -101,9 +101,7 @@ function M.to_string(money, pad, trim, _, no_color)
                 local prefix = i > 1 and ('|cffa0a0a0' .. strsub(str, 1, i - 1) .. FONT_COLOR_CODE_CLOSE) or ''
                 return prefix .. color .. strsub(str, i) .. FONT_COLOR_CODE_CLOSE .. text
             else
-                local suffix = gsub(text, '|c%x%x%x%x%x%x%x%x', '')
-                return '|cff333333' .. str .. FONT_COLOR_CODE_CLOSE
-                    .. '|cff333333' .. suffix .. FONT_COLOR_CODE_CLOSE
+                return string.rep(' ', width + 1)
             end
         end
         tinsert(parts, part(gold, 3, gold_color, gold_text))
