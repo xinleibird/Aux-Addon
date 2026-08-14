@@ -443,7 +443,7 @@ do
     local total_price = stack_price and stack_price * stack_count or nil
 
     local formatted_stack = stack_price and money.to_string(stack_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("?")
-    local formatted_total = total_price and money.to_string(total_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("无一口价")
+    local formatted_total = total_price and money.to_string(total_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("无立拍")
 
     local text
     if stack_count == 1 then

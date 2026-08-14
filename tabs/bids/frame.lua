@@ -57,7 +57,7 @@ end
 do
     local btn = gui.button(frame)
     btn:SetPoint('TOPLEFT', bid_button, 'TOPRIGHT', 5, 0)
-    btn:SetText('一口价')
+    btn:SetText('立拍')
     btn:Disable()
     buyout_button = btn
 end

@@ -261,7 +261,7 @@ M.search_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = {'一口价\n(件)', '一口价\n(组)'},
+        title = {'立拍\n(件)', '立拍\n(组)'},
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -393,7 +393,7 @@ M.auctions_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = {'一口价\n(件)', '一口价\n(组)'},
+        title = {'立拍\n(件)', '立拍\n(组)'},
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -536,7 +536,7 @@ M.bids_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = {'一口价\n(件)', '一口价\n(组)'},
+        title = {'立拍\n(件)', '立拍\n(组)'},
         width = .04,
         align = 'RIGHT',
         isPrice = true,
