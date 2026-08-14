@@ -228,7 +228,7 @@ M.search_columns = {
         end,
     },
     {
-        title = '',
+        title = '竞拍',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -252,7 +252,7 @@ M.search_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '',
+        title = '一口价',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -358,7 +358,7 @@ M.auctions_columns = {
         end,
     },
     {
-        title = '',
+        title = '竞拍',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -382,7 +382,7 @@ M.auctions_columns = {
         cmp = start_cmp,
     },
     {
-        title = '',
+        title = '一口价',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -499,7 +499,7 @@ M.bids_columns = {
         end,
     },
     {
-        title = '',
+        title = '竞拍',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -523,7 +523,7 @@ M.bids_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '',
+        title = '一口价',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -591,9 +591,14 @@ local methods = {
         weight = (self.contentFrame:GetRight() - self.contentFrame:GetLeft()) / weight
         for i, cell in self.headCells do
             local width = cell.info.width * weight
+            if cell.info.isPrice and cell.info.title ~= '' then
+                width = width * 3
+            elseif cell.info.isPrice then
+                width = 0
+            end
             cell:SetWidth(width)
             for _, row in self.rows do
-                row.cells[i]:SetWidth(width)
+                row.cells[i]:SetWidth(cell.info.width * weight)
             end
         end
     end,
