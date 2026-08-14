@@ -119,7 +119,7 @@ function post_auction(slot, k)
 			
 			if disenchant.value(item_info.slot, item_info.quality, item_info.level, item_info.item_id) ~= nil then 
 				if buyout_price < 0.95 * tonumber(disenchant.value(item_info.slot, item_info.quality, item_info.level, item_info.item_id)) -30 then
-					print("AUX: autopricing recommends disenchanting!")
+					print("AUX: 自动定价建议分解！")
 					return stop()
 				end
 			end
@@ -127,13 +127,13 @@ function post_auction(slot, k)
 			if kz_daily == 1 and vendor_price > 0 then 
 				if tonumber(history.value(state.item_key)) < 1.35 * vendor_price 
 				or tonumber(history.market_value(state.item_key)) < 1.35 * vendor_price then
-					print("AUX: autopricing recommends vendoring!")
+					print("AUX: 自动定价建议卖给商人！")
 					return stop()
 				end
 			end
 			
 			if start_price == 0 or (kz_warn == 2 and kz_pricing == 0) then
-				print("AUX: insufficient data for autopricing!")
+				print("AUX: 自动定价数据不足！")
 				return stop()
 			end
 			

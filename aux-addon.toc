@@ -2,7 +2,7 @@
 ## Author: shirsig
 ## OptionalDeps: ShaguTweaks
 ## Title: aux
-## Notes: Auction House replacement
+## Notes: 拍卖行替代品
 ## SavedVariables: aux
 
 libs\package.lua

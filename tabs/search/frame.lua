@@ -58,7 +58,7 @@ do
 	local btn = gui.button(frame, gui.font_size.small)
 	btn:SetHeight(25)
 	btn:SetWidth(60)
-	btn:SetText(aux.color.label.enabled'Range:')
+	btn:SetText(aux.color.label.enabled'范围:')
 	btn:SetScript('OnClick', function()
 		update_real_time(true)
 	end)
@@ -69,7 +69,7 @@ do
 	btn:SetHeight(25)
 	btn:SetWidth(60)
 	btn:Hide()
-	btn:SetText(aux.color.label.enabled'Real Time')
+	btn:SetText(aux.color.label.enabled'实时')
 	btn:SetScript('OnClick', function()
 		update_real_time(false)
 	end)
@@ -126,7 +126,7 @@ do
     local btn = gui.button(frame)
     btn:SetHeight(25)
     btn:SetPoint('TOPRIGHT', -5, -8)
-    btn:SetText('Search')
+    btn:SetText('搜索')
     btn:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
     btn:SetScript('OnClick', function()
         if arg1 == 'RightButton' then
@@ -140,7 +140,7 @@ do
     local btn = gui.button(frame)
     btn:SetHeight(25)
     btn:SetPoint('TOPRIGHT', -5, -8)
-    btn:SetText('Pause')
+    btn:SetText('暂停')
     btn:SetScript('OnClick', function()
         scan.abort(search_scan_id)
     end)
@@ -151,7 +151,7 @@ do
     btn:SetHeight(25)
     btn:SetPoint('RIGHT', start_button, 'LEFT', -4, 0)
     btn:SetBackdropColor(aux.color.state.enabled())
-    btn:SetText('Resume')
+    btn:SetText('恢复扫描')
     btn:SetScript('OnClick', function()
         execute(true)
     end)
@@ -188,7 +188,7 @@ do
     btn:SetPoint('BOTTOMLEFT', aux.frame.content, 'TOPLEFT', 10, 8)
     btn:SetWidth(243)
     btn:SetHeight(22)
-    btn:SetText('Search Results')
+    btn:SetText('搜索结果')
     btn:SetScript('OnClick', function() set_subtab(RESULTS) end)
     search_results_button = btn
 end
@@ -197,7 +197,7 @@ do
     btn:SetPoint('TOPLEFT', search_results_button, 'TOPRIGHT', 5, 0)
     btn:SetWidth(243)
     btn:SetHeight(22)
-    btn:SetText('Saved Searches')
+    btn:SetText('保存搜索')
     btn:SetScript('OnClick', function() set_subtab(SAVED) end)
     saved_searches_button = btn
 end
@@ -206,7 +206,7 @@ do
     btn:SetPoint('TOPLEFT', saved_searches_button, 'TOPRIGHT', 5, 0)
     btn:SetWidth(243)
     btn:SetHeight(22)
-    btn:SetText('Filter Builder')
+    btn:SetText('过滤器')
     btn:SetScript('OnClick', function() set_subtab(FILTER) end)
     new_filter_button = btn
 end
@@ -220,21 +220,21 @@ end
 do
     local btn = gui.button(frame.results)
     btn:SetPoint('TOPLEFT', status_bar_frame, 'TOPRIGHT', 5, 0)
-    btn:SetText('Bid')
+    btn:SetText('竞标')
     btn:Disable()
     bid_button = btn
 end
 do
     local btn = gui.button(frame.results)
     btn:SetPoint('TOPLEFT', bid_button, 'TOPRIGHT', 5, 0)
-    btn:SetText('Buyout')
+    btn:SetText('一口价')
     btn:Disable()
     buyout_button = btn
 end
 do
     local btn = gui.button(frame.results)
     btn:SetPoint('TOPLEFT', buyout_button, 'TOPRIGHT', 5, 0)
-    btn:SetText('Clear')
+    btn:SetText('清除')
     btn:SetScript('OnClick', function()
         while tremove(current_search().records) do end
         current_search().table:SetDatabase()
@@ -243,7 +243,7 @@ end
 do
     local btn = gui.button(frame.saved)
     btn:SetPoint('TOPLEFT', status_bar_frame, 'TOPRIGHT', 5, 0)
-    btn:SetText('Favorite')
+    btn:SetText('收藏')
     btn:SetScript('OnClick', function()
         add_favorite(search_box:GetText())
     end)
@@ -251,7 +251,7 @@ end
 do
     local btn1 = gui.button(frame.filter)
     btn1:SetPoint('TOPLEFT', status_bar_frame, 'TOPRIGHT', 5, 0)
-    btn1:SetText('Search')
+    btn1:SetText('搜索')
     btn1:SetScript('OnClick', function()
 	    export_filter_string()
         execute()
@@ -259,12 +259,12 @@ do
 
     local btn2 = gui.button(frame.filter)
     btn2:SetPoint('LEFT', btn1, 'RIGHT', 5, 0)
-    btn2:SetText('Export')
+    btn2:SetText('导出')
     btn2:SetScript('OnClick', export_filter_string)
 
     local btn3 = gui.button(frame.filter)
     btn3:SetPoint('LEFT', btn2, 'RIGHT', 5, 0)
-    btn3:SetText('Import')
+    btn3:SetText('导入')
     btn3:SetScript('OnClick', import_filter_string)
 end
 do
@@ -291,7 +291,7 @@ do
     editbox.enter = function() editbox:ClearFocus() end
     local label = gui.label(editbox, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', editbox, 'TOPLEFT', 2, 0)
-    label:SetText('Name:')
+    label:SetText('名称')
     name_input = editbox
 end
 do
@@ -300,7 +300,7 @@ do
     checkbox:SetScript('OnClick', update_form)
     local label = gui.label(checkbox, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', checkbox, 'TOPLEFT', -34, -14)
-    label:SetText('Exact:')
+    label:SetText('精确的')
     exact_checkbox = checkbox
 end
 do
@@ -326,7 +326,7 @@ do
     end
     local label = gui.label(editbox, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', editbox, 'TOPLEFT', 2, 0)
-    label:SetText('Level Range:')
+    label:SetText('等级范围')
     min_level_input = editbox
 end
 do
@@ -361,7 +361,7 @@ do
     checkbox:SetScript('OnClick', update_form)
     local label = gui.label(checkbox, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', checkbox, 'TOPLEFT', -40, -14)
-    label:SetText('Usable:')
+    label:SetText('可用')
     usable_checkbox = checkbox
 end
 do
@@ -371,7 +371,7 @@ do
     dropdown:SetWidth(300)
     local label = gui.label(dropdown, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 2, 0)
-    label:SetText('Item Class:')
+    label:SetText('物品类别')
     UIDropDownMenu_Initialize(dropdown, initialize_class_dropdown)
     dropdown:SetScript('OnShow', function()
         UIDropDownMenu_Initialize(this, initialize_class_dropdown)
@@ -384,7 +384,7 @@ do
     dropdown:SetWidth(300)
     local label = gui.label(dropdown, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 2, 0)
-    label:SetText('Item Subclass:')
+    label:SetText('物品子类别')
     UIDropDownMenu_Initialize(dropdown, initialize_subclass_dropdown)
     dropdown:SetScript('OnShow', function()
         UIDropDownMenu_Initialize(this, initialize_subclass_dropdown)
@@ -397,7 +397,7 @@ do
     dropdown:SetWidth(300)
     local label = gui.label(dropdown, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 2, 0)
-    label:SetText('Item Slot:')
+    label:SetText('物品部位')
     UIDropDownMenu_Initialize(dropdown, initialize_slot_dropdown)
     dropdown:SetScript('OnShow', function()
         UIDropDownMenu_Initialize(this, initialize_slot_dropdown)
@@ -410,7 +410,7 @@ do
     dropdown:SetWidth(300)
     local label = gui.label(dropdown, gui.font_size.small)
     label:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 2, 0)
-    label:SetText('Min Quality:')
+    label:SetText('最小品质')
     UIDropDownMenu_Initialize(dropdown, initialize_quality_dropdown)
     dropdown:SetScript('OnShow', function()
         UIDropDownMenu_Initialize(this, initialize_quality_dropdown)
@@ -428,7 +428,7 @@ do
     _G[dropdown:GetName() .. 'Text']:Hide()
     local label = gui.label(dropdown, gui.font_size.medium)
     label:SetPoint('RIGHT', dropdown, 'LEFT', -5, 0)
-    label:SetText('Component:')
+    label:SetText('构件')
     filter_dropdown = dropdown
 end
 do
@@ -548,10 +548,10 @@ for _ = 1, 5 do
 end
 
 favorite_searches_listing = listing.new(frame.saved.favorite)
-favorite_searches_listing:SetColInfo{{name='Auto:', width=.07, align='CENTER'}, {name='Favorite Searches:', width=.80}}
+favorite_searches_listing:SetColInfo{{name='自动购买', width=.07, align='CENTER'}, {name='收藏的搜索', width=.80}}
 
 recent_searches_listing = listing.new(frame.saved.recent)
-recent_searches_listing:SetColInfo{{name='Recent Searches:', width=1}}
+recent_searches_listing:SetColInfo{{name='最近查询', width=1}}
 
 for listing in T.temp-T.set(favorite_searches_listing, recent_searches_listing) do
 	for k, v in handlers do

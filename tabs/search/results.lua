@@ -154,7 +154,7 @@ function start_real_time_scan(query, search, continuation)
 		auto_bid_validator = search.auto_bid_validator,
 		on_scan_start = function()
 			search.status_bar:update_status(.9999, .9999)
-			search.status_bar:set_text('Scanning last page ...')
+			search.status_bar:set_text('扫描的最后一页...')
 		end,
 		on_page_loaded = function(_, _, last_page)
 			next_page = last_page
@@ -191,7 +191,7 @@ function start_real_time_scan(query, search, continuation)
 		end,
 		on_abort = function()
 			search.status_bar:update_status(1, 1)
-			search.status_bar:set_text('Scan paused')
+			search.status_bar:set_text('扫描已暂停')
 
 			search.continuation = next_page or not ignore_page and query.blizzard_query.first_page or true
 
@@ -232,9 +232,9 @@ function start_search(queries, continuation)
 		on_scan_start = function()
 			search.status_bar:update_status(0, 0)
 			if continuation then
-				search.status_bar:set_text('|cff3399ffResuming scan...|r')
+				search.status_bar:set_text('|cff3399ff恢复扫描中...|r')
 			else
-				search.status_bar:set_text('|cff3399ffScanning auctions...|r')
+				search.status_bar:set_text('|cff3399ff扫描拍卖中...|r')
 			end
 		end,
 on_page_loaded = function(_, total_scan_pages)
@@ -251,7 +251,7 @@ on_page_loaded = function(_, total_scan_pages)
 	end
 
 	search.status_bar:set_text(format(
-		'|cff3399ffScanning|r %s(Page |cffff8000%d|r / |cff00ff00%d|r)',
+		'|cff3399ff扫描中|r %s(第 |cffff8000%d|r / |cff00ff00%d|r 页)',
 		query_text, current_page, total_scan_pages
 	))
 end,
@@ -272,7 +272,7 @@ end,
 		end,
 		on_complete = function()
 			search.status_bar:update_status(1, 1)
-			search.status_bar:set_text('|cff00ff00Scan complete|r')
+			search.status_bar:set_text('|cff00ff00扫描完成|r')
 
 			if current_search() == search and frame.results:IsVisible() and getn(search.records) == 0 then
 				set_subtab(SAVED)
@@ -283,7 +283,7 @@ end,
 		end,
 		on_abort = function()
 			search.status_bar:update_status(1, 1)
-			search.status_bar:set_text('|cffff8000Scan paused|r')
+			search.status_bar:set_text('|cffff8000扫描暂停|r')
 
 			if current_query then
 				search.continuation = {current_query, current_page + 1}
@@ -316,14 +316,14 @@ function M.execute(resume, real_time)
 
 	local queries, error = filter_util.queries(filter_string)
 	if not queries then
-		aux.print('Invalid filter:', error)
+		aux.print('无效的筛选:', error)
 		return
 	elseif real_time then
 		if getn(queries) > 1 then
-			aux.print('Error: The real time mode does not support multi-queries')
+			aux.print('错误：实时模式不支持多查询')
 			return
 		elseif queries[1].blizzard_query.first_page or queries[1].blizzard_query.last_page then
-			aux.print('Error: The real time mode does not support page ranges')
+			aux.print('错误：实时模式不支持页范围')
 			return
 		end
 	end

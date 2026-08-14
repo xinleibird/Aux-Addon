@@ -14,7 +14,7 @@ local item_listing = require 'aux.gui.item_listing'
 local al = require 'aux.gui.auction_listing'
 local gui = require 'aux.gui'
 
-local tab = aux.tab 'Post'
+local tab = aux.tab '出售'
 
 local settings_schema = {'tuple', '#', {duration='number'}, {start_price='number'}, {buyout_price='number'}, {hidden='boolean'}}
 
@@ -334,7 +334,7 @@ function update_item_configuration()
         item.texture:SetTexture(nil)
         item.count:SetText()
         item.name:SetTextColor(aux.color.label.enabled())
-        item.name:SetText('No item selected')
+        item.name:SetText('没有选择物品')
 
         unit_start_price_input:Hide()
         unit_buyout_price_input:Hide()
@@ -384,7 +384,7 @@ do
     local stack_size, stack_count = selected_item.max_charges and 1 or stack_size_slider:GetValue(), stack_count_slider:GetValue()
     local base_amount = floor(selected_item.unit_vendor_price * deposit_factor * stack_size) * stack_count * duration_factor
     local amount = floor(base_amount * 0.6)  -- apply 40% reduction
-    deposit:SetText('Deposit: ' .. money.to_string(amount, nil, nil, aux.color.text.enabled))
+    deposit:SetText('保管费: ' .. money.to_string(amount, nil, nil, aux.color.text.enabled))
 end
 
 
@@ -401,7 +401,7 @@ do
     local item_price = unit_price and unit_price * stack_size or nil
     local total_price = item_price and item_price * stack_count or nil
     local formatted_item = item_price and money.to_string(item_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("?")
-    local formatted_total = total_price and money.to_string(total_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("No sell price")
+    local formatted_total = total_price and money.to_string(total_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("无出售价格")
 
     local text
     if stack_count == 1 then
@@ -410,7 +410,7 @@ do
         text = formatted_item .. " / " .. formatted_total
     end
 
-    vendor_price_label:SetText("Vendor Price: " .. text)
+    vendor_price_label:SetText("商人售价：" .. text)
 end
 
 
@@ -424,13 +424,13 @@ do
     local total_price = stack_price and stack_price * stack_count or nil
 
     local formatted_stack = stack_price and money.to_string(stack_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("?")
-    local formatted_total = total_price and money.to_string(total_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("No buyout")
+    local formatted_total = total_price and money.to_string(total_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("无一口价")
 
     local text
     if stack_count == 1 then
-        text = "Final Price: " .. formatted_stack
+        text = "最终价格：" .. formatted_stack
     else
-        text = "Final Price: " .. formatted_stack .. " / " .. formatted_total
+        text = "最终价格：" .. formatted_stack .. " / " .. formatted_total
     end
 
     final_stack_price:SetText(text)
@@ -460,13 +460,13 @@ do
 
     if unit_diff and total_diff then
         if total_diff > 0 then
-            label = "|cff00ff00Profit|r: "
+            label = "|cff00ff00利润|r: "
         elseif total_diff < 0 then
-            label = "|cffff0000Loss|r: "
+            label = "|cffff0000亏损|r: "
             unit_diff = math.abs(unit_diff)
             total_diff = math.abs(total_diff)
         else
-            label = aux.color.text.enabled("No profit or loss")
+            label = aux.color.text.enabled("无盈亏")
         end
 
         if total_diff ~= 0 then
@@ -486,7 +486,7 @@ do
             profit_loss:SetText(label)
         end
     else
-        profit_loss:SetText(aux.color.text.enabled("No data"))
+        profit_loss:SetText(aux.color.text.enabled("无数据"))
     end
 end
 
@@ -682,7 +682,7 @@ function refresh_entries()
         bid_records[item_key], buyout_records[item_key] = nil, nil
         local query = scan_util.item_query(selected_item.item_id)
         status_bar:update_status(0, 0)
-        status_bar:set_text('|cff3399ffScanning auctions...|r')
+        status_bar:set_text('|cff3399ff扫描拍卖...|r')
 
 		scan_id = scan.start{
             type = 'list',
@@ -690,7 +690,7 @@ function refresh_entries()
 			queries = T.list(query),
 			on_page_loaded = function(page, total_pages)
                 status_bar:update_status(page / total_pages, 0) -- TODO
-                status_bar:set_text(format('|cff3399ffScanning|r (Page |cffff8000%d|r / |cff00ff00%d|r)', page, total_pages))
+                status_bar:set_text(format('|cff3399ff扫描中|r (第 |cffff8000%d|r / |cff00ff00%d|r 页)', page, total_pages))
 			end,
 			on_auction = function(auction_record)
 				if auction_record.item_key == item_key then
@@ -707,14 +707,14 @@ function refresh_entries()
 			on_abort = function()
 				bid_records[item_key], buyout_records[item_key] = nil, nil
                 status_bar:update_status(1, 1)
-                status_bar:set_text('|cffff0000Scan aborted|r')
+                status_bar:set_text('|cffff0000扫描终止|r')
 			end,
 			on_complete = function()
 				bid_records[item_key] = bid_records[item_key] or T.acquire()
 				buyout_records[item_key] = buyout_records[item_key] or T.acquire()
                 refresh = true
                 status_bar:update_status(1, 1)
-                status_bar:set_text('|cff00ff00Scan complete|r')
+                status_bar:set_text('|cff00ff00扫描完成|r')
             end,
 		}
 	end
@@ -772,17 +772,17 @@ function initialize_duration_dropdown()
         refresh = true
     end
     UIDropDownMenu_AddButton{
-        text = '6 Hours',
+        text = '6 小时',
         value = DURATION_2,
         func = on_click,
     }
     UIDropDownMenu_AddButton{
-        text = '24 Hours',
+        text = '24 小时',
         value = DURATION_8,
         func = on_click,
     }
     UIDropDownMenu_AddButton{
-        text = '72 Hours',
+        text = '72 小时',
         value = DURATION_24,
         func = on_click,
     }

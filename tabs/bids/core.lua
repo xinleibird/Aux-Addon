@@ -6,7 +6,7 @@ local info = require 'aux.util.info'
 local scan_util = require 'aux.util.scan'
 local scan = require 'aux.core.scan'
 
-local tab = aux.tab 'Bids'
+local tab = aux.tab '竞拍'
 
 auction_records = {}
 
@@ -26,7 +26,7 @@ end
 function M.scan_bids()
 
     status_bar:update_status(0, 0)
-    status_bar:set_text('|cff3399ffScanning auctions...|r')
+    status_bar:set_text('|cff3399ff扫描拍卖...|r')
 
     T.wipe(auction_records)
     update_listing()
@@ -35,19 +35,19 @@ function M.scan_bids()
         queries = T.list(T.map('blizzard_query', T.acquire())),
         on_page_loaded = function(page, total_pages)
             status_bar:update_status(page / total_pages, 0)
-            status_bar:set_text(format('|cff3399ffScanning|r (Page |cffff8000%d|r / |cff00ff00%d|r)', page, total_pages))
+            status_bar:set_text(format('|cff3399ff扫描中|r (第 |cffff8000%d|r / |cff00ff00%d|r 页)', page, total_pages))
         end,
         on_auction = function(auction_record)
             tinsert(auction_records, auction_record)
         end,
         on_complete = function()
             status_bar:update_status(1, 1)
-            status_bar:set_text('|cff00ff00Scan complete|r')
+            status_bar:set_text('|cff00ff00扫描完成|r')
             update_listing()
         end,
         on_abort = function()
             status_bar:update_status(1, 1)
-            status_bar:set_text('|cffff0000Scan aborted|r')
+            status_bar:set_text('|cffff0000扫描终止|r')
         end,
     }
 end

@@ -55,7 +55,7 @@ function SlashCmdList.AUX(command)
 	    aux.account_data.items = {}
         aux.account_data.item_ids = {}
         aux.account_data.auctionable_items = {}
-        aux.print('Item cache cleared.')
+        aux.print('物品缓存已清除。')
     elseif arguments[1] == 'populate' and arguments[2] == 'wdb' then
 	    info.populate_wdb()
 	elseif arguments[1] == 'sharing' then
@@ -65,22 +65,22 @@ function SlashCmdList.AUX(command)
 		aux.account_data.showhidden = not aux.account_data.showhidden
 		aux.print('show hidden ' .. status(aux.account_data.showhidden))
 	else
-		aux.print('Usage:')
-		aux.print('- scale [' .. aux.color.blue(aux.account_data.scale) .. ']')
-		aux.print('- ignore owner [' .. status(aux.account_data.ignore_owner) .. ']')
-		aux.print('- post bid [' .. status(aux.account_data.post_bid) .. ']')
-        aux.print('- post duration [' .. aux.color.blue(aux.account_data.post_duration / 60 * 3 .. 'h') .. ']')
-		aux.print('- post stack [' .. status(aux.account_data.post_stack) .. ']')
-        aux.print('- crafting cost [' .. status(aux.account_data.crafting_cost) .. ']')
-		aux.print('- tooltip value [' .. status(tooltip_settings.value) .. ']')
-		aux.print('- tooltip daily [' .. status(tooltip_settings.daily) .. ']')
-		aux.print('- tooltip merchant buy [' .. status(tooltip_settings.merchant_buy) .. ']')
-		aux.print('- tooltip merchant sell [' .. status(tooltip_settings.merchant_sell) .. ']')
-		aux.print('- tooltip disenchant value [' .. status(tooltip_settings.disenchant_value) .. ']')
-		aux.print('- tooltip disenchant distribution [' .. status(tooltip_settings.disenchant_distribution) .. ']')
-		aux.print('- clear item cache')
-		aux.print('- populate wdb')
-		aux.print('- sharing [' .. status(aux.account_data.sharing) .. ']')
-		aux.print('- show hidden [' .. status(aux.account_data.showhidden) .. ']')
+		aux.print('使用方法：')
+		aux.print('- scale [' .. aux.color.blue(aux.account_data.scale) .. '] 框架大小')
+		aux.print('- ignore owner [' .. status(aux.account_data.ignore_owner) .. '] 忽略卖家')
+		aux.print('- post bid [' .. status(aux.account_data.post_bid) .. '] 在出售选项卡中添加出价清单')
+        aux.print('- post duration [' .. aux.color.blue(aux.account_data.post_duration / 60 * 3 .. 'h') .. '] 设置上架时长')
+		aux.print('- post stack [' .. status(aux.account_data.post_stack) .. '] 设置上架堆叠')
+        aux.print('- crafting cost [' .. status(aux.account_data.crafting_cost) .. '] 制作成本')
+		aux.print('- tooltip value [' .. status(tooltip_settings.value) .. '] 鼠标提示 拍卖价格')
+		aux.print('- tooltip daily [' .. status(tooltip_settings.daily) .. '] 鼠标提示 今日价格')
+		aux.print('- tooltip merchant buy [' .. status(tooltip_settings.merchant_buy) .. '] 鼠标提示 商店购买价格')
+		aux.print('- tooltip merchant sell [' .. status(tooltip_settings.merchant_sell) .. '] 鼠标提示 商店出售价格')
+		aux.print('- tooltip disenchant value [' .. status(tooltip_settings.disenchant_value) .. '] 鼠标提示 分解价值')
+		aux.print('- tooltip disenchant distribution [' .. status(tooltip_settings.disenchant_distribution) .. '] 鼠标提示 分解物品')
+		aux.print('- clear item cache 清除物品缓存')
+		aux.print('- populate wdb 填充wdb')
+		aux.print('- sharing [' .. status(aux.account_data.sharing) .. '] 数据共享')
+		aux.print('- show hidden [' .. status(aux.account_data.showhidden) .. '] 显示隐藏项')
     end
 end
