@@ -229,7 +229,7 @@ M.search_columns = {
     },
     {
         title = '',
-        width = .04,
+        width = .06,
         align = 'RIGHT',
         isPrice = true,
         fill = price_fill(get_bid_price, 1),
@@ -254,7 +254,7 @@ M.search_columns = {
     },
     {
         title = '',
-        width = .04,
+        width = .06,
         align = 'RIGHT',
         isPrice = true,
         fill = price_fill(get_buyout_price, 1, '---'),
