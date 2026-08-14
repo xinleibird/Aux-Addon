@@ -78,9 +78,9 @@ bid_listing:SetColInfo{
     {name='拍卖数', width=.17, align='CENTER'},
     {name='剩余\n时间', width=.11, align='CENTER'},
     {name='组叠\n大小', width=.11, align='CENTER'},
-    {name='金', width=.16, align='RIGHT'},
-    {name='银', width=.12, align='RIGHT'},
-    {name='铜', width=.12, align='RIGHT'},
+    {name='', width=.16, align='RIGHT'},
+    {name='', width=.12, align='RIGHT'},
+    {name='', width=.12, align='RIGHT'},
     {name='价格\n对比', width=.21, align='CENTER'},
 }
 bid_listing:SetSelection(function(data)
@@ -104,9 +104,9 @@ buyout_listing:SetColInfo{
 	{name='拍卖数', width=.17, align='CENTER'},
 	{name='剩余\n时间', width=.11, align='CENTER'},
 	{name='组叠\n大小', width=.12, align='CENTER'},
-	{name='金', width=.16, align='RIGHT'},
-	{name='银', width=.12, align='RIGHT'},
-	{name='铜', width=.12, align='RIGHT'},
+	{name='', width=.16, align='RIGHT'},
+	{name='', width=.12, align='RIGHT'},
+	{name='', width=.12, align='RIGHT'},
 	{name='价格\n对比', width=.20, align='CENTER'},
 }
 buyout_listing:SetSelection(function(data)
@@ -341,9 +341,9 @@ function aux.handle.LOAD()
 			{name='拍卖数', width=.15, align='CENTER'},
 			{name='剩余时间', width=.15, align='CENTER'},
 			{name='组叠大小', width=.15, align='CENTER'},
-			{name='金', width=.13, align='RIGHT'},
-			{name='银', width=.10, align='RIGHT'},
-			{name='铜', width=.10, align='RIGHT'},
+			{name='', width=.13, align='RIGHT'},
+			{name='', width=.10, align='RIGHT'},
+			{name='', width=.10, align='RIGHT'},
 			{name='价格对比', width=.17, align='CENTER'},
 		}
 	end

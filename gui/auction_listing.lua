@@ -228,7 +228,7 @@ M.search_columns = {
         end,
     },
     {
-        title = '金',
+        title = '',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -236,7 +236,7 @@ M.search_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '银',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -244,7 +244,7 @@ M.search_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '铜',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -252,7 +252,7 @@ M.search_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '金',
+        title = '',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -260,7 +260,7 @@ M.search_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = '银',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -268,7 +268,7 @@ M.search_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = '铜',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -358,7 +358,7 @@ M.auctions_columns = {
         end,
     },
     {
-        title = '金',
+        title = '',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -366,7 +366,7 @@ M.auctions_columns = {
         cmp = start_cmp,
     },
     {
-        title = '银',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -374,7 +374,7 @@ M.auctions_columns = {
         cmp = start_cmp,
     },
     {
-        title = '铜',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -382,7 +382,7 @@ M.auctions_columns = {
         cmp = start_cmp,
     },
     {
-        title = '金',
+        title = '',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -390,7 +390,7 @@ M.auctions_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = '银',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -398,7 +398,7 @@ M.auctions_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = '铜',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -499,7 +499,7 @@ M.bids_columns = {
         end,
     },
     {
-        title = '金',
+        title = '',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -507,7 +507,7 @@ M.bids_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '银',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -515,7 +515,7 @@ M.bids_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '铜',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -523,7 +523,7 @@ M.bids_columns = {
         cmp = bid_cmp,
     },
     {
-        title = '金',
+        title = '',
         width = .05,
         align = 'RIGHT',
         isPrice = true,
@@ -531,7 +531,7 @@ M.bids_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = '银',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -539,7 +539,7 @@ M.bids_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = '铜',
+        title = '',
         width = .04,
         align = 'RIGHT',
         isPrice = true,
