@@ -20,6 +20,7 @@ local COPPER_COLOR = '|cffc8602c'
 
 local function gsc_text(price, which)
 	if not price or price <= 0 then return '' end
+	price = floor(price)
 	local gold, silver, copper = money.to_gsc(price)
 	if which == 1 then
 		return gold > 0 and (GOLD_COLOR .. gold .. 'g' .. FONT_COLOR_CODE_CLOSE) or ''
