@@ -538,10 +538,7 @@ for _ = 1, 5 do
 	    end
     end)
     table:SetHandler('OnSelectionChanged', function(rt, datum)
-	    bid_button:Disable()
-        buyout_button:Disable()
-        if not datum then return end
-        find_auction(datum.record)
+        update_buttons(datum and datum.record)
     end)
     table:Hide()
     tinsert(tables, table)
