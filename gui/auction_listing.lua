@@ -279,7 +279,7 @@ M.search_columns = {
     },
     {
         title = '历史价\n(%)',
-        width = .08,
+        width = .10,
         align = 'CENTER',
         fill = function(cell, record)
             local pct, bidPct = record_percentage(record)
