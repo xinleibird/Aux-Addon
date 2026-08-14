@@ -237,7 +237,7 @@ M.search_columns = {
     },
     {
         title = {'竞拍\n(每件)', '竞拍\n(每组)'},
-        width = .05,
+        width = .04,
         align = 'RIGHT',
         isPrice = true,
         group = true,
@@ -262,7 +262,7 @@ M.search_columns = {
     },
     {
         title = {'一口价\n(每件)', '一口价\n(每组)'},
-        width = .05,
+        width = .04,
         align = 'RIGHT',
         isPrice = true,
         group = true,
@@ -369,7 +369,7 @@ M.auctions_columns = {
     },
     {
         title = {'竞拍\n(每件)', '竞拍\n(每组)'},
-        width = .05,
+        width = .04,
         align = 'RIGHT',
         isPrice = true,
         group = true,
@@ -394,7 +394,7 @@ M.auctions_columns = {
     },
     {
         title = {'一口价\n(每件)', '一口价\n(每组)'},
-        width = .05,
+        width = .04,
         align = 'RIGHT',
         isPrice = true,
         group = true,
@@ -512,7 +512,7 @@ M.bids_columns = {
     },
     {
         title = {'竞拍\n(每件)', '竞拍\n(每组)'},
-        width = .05,
+        width = .04,
         align = 'RIGHT',
         isPrice = true,
         group = true,
@@ -537,7 +537,7 @@ M.bids_columns = {
     },
     {
         title = {'一口价\n(每件)', '一口价\n(每组)'},
-        width = .05,
+        width = .04,
         align = 'RIGHT',
         isPrice = true,
         group = true,
