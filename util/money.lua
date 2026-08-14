@@ -77,8 +77,8 @@ function M.to_string(money, pad, trim, _, no_color)
 
     local text
 
-    if trim then
-        local parts = T.temp - T.acquire()
+    if trim or (pad and no_color) then
+        local parts = {}
         if gold > 0 then
             tinsert(parts, gold_color .. format('%d', gold) .. FONT_COLOR_CODE_CLOSE .. gold_text)
         end
@@ -92,13 +92,21 @@ function M.to_string(money, pad, trim, _, no_color)
     else
         local parts = {}
         if gold > 0 then
-            tinsert(parts, gold_color .. format('%d', gold) .. FONT_COLOR_CODE_CLOSE .. gold_text)
+            tinsert(parts, gold_color .. format('%3d', gold) .. FONT_COLOR_CODE_CLOSE .. gold_text)
+        else
+            tinsert(parts, '    ')
         end
         if silver > 0 then
-            tinsert(parts, silver_color .. format('%d', silver) .. FONT_COLOR_CODE_CLOSE .. silver_text)
+            tinsert(parts, silver_color .. format('%2d', silver) .. FONT_COLOR_CODE_CLOSE .. silver_text)
+        elseif gold > 0 and copper > 0 then
+            tinsert(parts, silver_color .. '0' .. FONT_COLOR_CODE_CLOSE .. silver_text)
+        else
+            tinsert(parts, '   ')
         end
-        if copper > 0 or (table.getn(parts) == 0) then
-            tinsert(parts, copper_color .. format('%d', copper) .. FONT_COLOR_CODE_CLOSE .. copper_text)
+        if copper > 0 or (gold == 0 and silver == 0) then
+            tinsert(parts, copper_color .. (copper > 0 and format('%2d', copper) or '0') .. FONT_COLOR_CODE_CLOSE .. copper_text)
+        else
+            tinsert(parts, '   ')
         end
         text = aux.join(parts, ' ')
     end
