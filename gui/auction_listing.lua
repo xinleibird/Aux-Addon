@@ -236,7 +236,7 @@ M.search_columns = {
         cmp = bid_cmp,
     },
     {
-        title = {'竞拍\n(每件)', '竞拍\n(每组)'},
+        title = {'竞拍\n(件)', '竞拍\n(组)'},
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -261,7 +261,7 @@ M.search_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = {'一口价\n(每件)', '一口价\n(每组)'},
+        title = {'即拍\n(件)', '即拍\n(组)'},
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -278,7 +278,7 @@ M.search_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = '历史价百分位',
+        title = '历史价\n(%)',
         width = .08,
         align = 'CENTER',
         fill = function(cell, record)
@@ -368,7 +368,7 @@ M.auctions_columns = {
         cmp = start_cmp,
     },
     {
-        title = {'竞拍\n(每件)', '竞拍\n(每组)'},
+        title = {'竞拍\n(件)', '竞拍\n(组)'},
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -393,7 +393,7 @@ M.auctions_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = {'一口价\n(每件)', '一口价\n(每组)'},
+        title = {'即拍\n(件)', '即拍\n(组)'},
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -511,7 +511,7 @@ M.bids_columns = {
         cmp = bid_cmp,
     },
     {
-        title = {'竞拍\n(每件)', '竞拍\n(每组)'},
+        title = {'竞拍\n(件)', '竞拍\n(组)'},
         width = .04,
         align = 'RIGHT',
         isPrice = true,
@@ -536,7 +536,7 @@ M.bids_columns = {
         cmp = buyout_cmp,
     },
     {
-        title = {'一口价\n(每件)', '一口价\n(每组)'},
+        title = {'即拍\n(件)', '即拍\n(组)'},
         width = .04,
         align = 'RIGHT',
         isPrice = true,
