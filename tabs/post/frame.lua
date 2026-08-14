@@ -104,7 +104,7 @@ buyout_listing:SetColInfo{
 	{name='拍卖数', width=.17, align='CENTER'},
 	{name='剩余\n时间', width=.11, align='CENTER'},
 	{name='组叠\n大小', width=.12, align='CENTER'},
-	{name='即拍', width=.16, align='RIGHT'},
+	{name='一口价', width=.16, align='RIGHT'},
 	{name='', width=.12, align='RIGHT'},
 	{name='', width=.12, align='RIGHT'},
 	{name='价格\n对比', width=.20, align='CENTER'},
@@ -298,7 +298,7 @@ do
     do
         local label = gui.label(editbox, gui.font_size.small)
         label:SetPoint('BOTTOMLEFT', editbox, 'TOPLEFT', 2, 1)
-        label:SetText('即拍')
+        label:SetText('一口价')
     end
     do
         local label = gui.label(editbox, 14)
@@ -341,7 +341,7 @@ function aux.handle.LOAD()
 			{name='拍卖数', width=.15, align='CENTER'},
 			{name='剩余时间', width=.15, align='CENTER'},
 			{name='组叠大小', width=.15, align='CENTER'},
-			{name='即拍', width=.13, align='RIGHT'},
+			{name='一口价', width=.13, align='RIGHT'},
 			{name='', width=.10, align='RIGHT'},
 			{name='', width=.10, align='RIGHT'},
 			{name='价格对比', width=.17, align='CENTER'},
