@@ -91,22 +91,24 @@ function M.to_string(money, pad, trim, _, no_color)
         text = aux.join(parts, ' ')
     else
         local parts = {}
-        local function padded(value, width, color)
+        local function part(value, width, color, text)
             local str = format('%0' .. width .. 'd', value)
-            local i = 1
-            while i <= width and strsub(str, i, i) == '0' do
-                i = i + 1
-            end
-            if i > width then
-                return '|cffa0a0a0' .. str .. FONT_COLOR_CODE_CLOSE
-            else
+            if value > 0 then
+                local i = 1
+                while i <= width and strsub(str, i, i) == '0' do
+                    i = i + 1
+                end
                 local prefix = i > 1 and ('|cffa0a0a0' .. strsub(str, 1, i - 1) .. FONT_COLOR_CODE_CLOSE) or ''
-                return prefix .. color .. strsub(str, i) .. FONT_COLOR_CODE_CLOSE
+                return prefix .. color .. strsub(str, i) .. FONT_COLOR_CODE_CLOSE .. text
+            else
+                local suffix = gsub(text, '|c%x%x%x%x%x%x%x%x', '')
+                return '|c00000000' .. str .. FONT_COLOR_CODE_CLOSE
+                    .. '|c00000000' .. suffix .. FONT_COLOR_CODE_CLOSE
             end
         end
-        tinsert(parts, padded(gold, 3, gold_color) .. gold_text)
-        tinsert(parts, padded(silver, 2, silver_color) .. silver_text)
-        tinsert(parts, padded(copper, 2, copper_color) .. copper_text)
+        tinsert(parts, part(gold, 3, gold_color, gold_text))
+        tinsert(parts, part(silver, 2, silver_color, silver_text))
+        tinsert(parts, part(copper, 2, copper_color, copper_text))
         text = aux.join(parts, ' ')
     end
 
