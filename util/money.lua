@@ -91,9 +91,17 @@ function M.to_string(money, pad, trim, _, no_color)
         text = aux.join(parts, ' ')
     else
         local parts = {}
-        tinsert(parts, gold_color .. format('%03d', gold) .. FONT_COLOR_CODE_CLOSE .. gold_text)
-        tinsert(parts, silver_color .. format('%02d', silver) .. FONT_COLOR_CODE_CLOSE .. silver_text)
-        tinsert(parts, copper_color .. format('%02d', copper) .. FONT_COLOR_CODE_CLOSE .. copper_text)
+        local function padded(value, width)
+            if value > 0 then
+                local num = tostring(value)
+                return string.rep('　', width - strlen(num)) .. num
+            else
+                return string.rep('　', width)
+            end
+        end
+        tinsert(parts, gold_color .. padded(gold, 3) .. FONT_COLOR_CODE_CLOSE .. gold_text)
+        tinsert(parts, silver_color .. padded(silver, 2) .. FONT_COLOR_CODE_CLOSE .. silver_text)
+        tinsert(parts, copper_color .. padded(copper, 2) .. FONT_COLOR_CODE_CLOSE .. copper_text)
         text = aux.join(parts, ' ')
     end
 
