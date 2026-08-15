@@ -55,6 +55,29 @@ end
 do
     local current_record
 
+    function purchase_verify(record, kind)
+        local scan_id = scan_util.find(
+            record,
+            status_bar,
+            function() end,
+            function()
+                aux.print('该拍卖已失效')
+                listing:RemoveAuctionRecord(record)
+            end,
+            function(index)
+                if not listing:ContainsRecord(record) then return end
+                if kind == 'bid' then
+                    aux.place_bid('bidder', index, record.bid_price, record.bid_price < record.buyout_price and function()
+                        info.bid_update(record)
+                        listing:SetDatabase()
+                    end or function() listing:RemoveAuctionRecord(record) end)
+                else
+                    aux.place_bid('bidder', index, record.buyout_price, function() listing:RemoveAuctionRecord(record) end)
+                end
+            end
+        )
+    end
+
     function update_buttons(record)
         if not record then
             bid_button:Disable()
@@ -64,15 +87,7 @@ do
 
         if not record.high_bidder then
             bid_button:SetScript('OnClick', function()
-                if scan_util.test(record, record.index) and listing:ContainsRecord(record) then
-                    aux.place_bid('bidder', record.index, record.bid_price, record.bid_price < record.buyout_price and function()
-                        info.bid_update(record)
-                        listing:SetDatabase()
-                    end or function() listing:RemoveAuctionRecord(record) end)
-                else
-                    aux.print('该拍卖已失效')
-                    listing:RemoveAuctionRecord(record)
-                end
+                purchase_verify(record, 'bid')
             end)
             bid_button:Enable()
         else
@@ -81,12 +96,7 @@ do
 
         if record.buyout_price > 0 then
             buyout_button:SetScript('OnClick', function()
-                if scan_util.test(record, record.index) and listing:ContainsRecord(record) then
-                    aux.place_bid('bidder', record.index, record.buyout_price, function() listing:RemoveAuctionRecord(record) end)
-                else
-                    aux.print('该拍卖已失效')
-                    listing:RemoveAuctionRecord(record)
-                end
+                purchase_verify(record, 'buyout')
             end)
             buyout_button:Enable()
         else

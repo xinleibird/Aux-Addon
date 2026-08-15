@@ -372,6 +372,31 @@ end
 do
 	local current_record
 
+	function purchase_verify(record, kind)
+		local search = current_search()
+		if not search.table:ContainsRecord(record) then return end
+		local scan_id = scan_util.find(
+			record,
+			search.status_bar,
+			function() end,
+			function()
+				aux.print('该拍卖已失效')
+				search.table:RemoveAuctionRecord(record)
+			end,
+			function(index)
+				if not search.table:ContainsRecord(record) then return end
+				if kind == 'bid' then
+					aux.place_bid('list', index, record.bid_price, record.bid_price < record.buyout_price and function()
+						info.bid_update(record)
+						search.table:SetDatabase()
+					end or function() search.table:RemoveAuctionRecord(record) end)
+				else
+					aux.place_bid('list', index, record.buyout_price, function() search.table:RemoveAuctionRecord(record) end)
+				end
+			end
+		)
+	end
+
 	function update_buttons(record)
 		if not record then
 			bid_button:Disable()
@@ -381,15 +406,7 @@ do
 
 		if not record.high_bidder then
 			bid_button:SetScript('OnClick', function()
-				if scan_util.test(record, record.index) and current_search().table:ContainsRecord(record) then
-					aux.place_bid('list', record.index, record.bid_price, record.bid_price < record.buyout_price and function()
-						info.bid_update(record)
-						current_search().table:SetDatabase()
-					end or function() current_search().table:RemoveAuctionRecord(record) end)
-				else
-					aux.print('该拍卖已失效')
-					current_search().table:RemoveAuctionRecord(record)
-				end
+				purchase_verify(record, 'bid')
 			end)
 			bid_button:Enable()
 		else
@@ -398,12 +415,7 @@ do
 
 		if record.buyout_price > 0 then
 			buyout_button:SetScript('OnClick', function()
-				if scan_util.test(record, record.index) and current_search().table:ContainsRecord(record) then
-					aux.place_bid('list', record.index, record.buyout_price, function() current_search().table:RemoveAuctionRecord(record) end)
-				else
-					aux.print('该拍卖已失效')
-					current_search().table:RemoveAuctionRecord(record)
-				end
+				purchase_verify(record, 'buyout')
 			end)
 			buyout_button:Enable()
 		else
