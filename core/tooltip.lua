@@ -12,6 +12,15 @@ local UNKNOWN = RED_FONT_COLOR_CODE .. '未知' .. FONT_COLOR_CODE_CLOSE
 
 local game_tooltip_hooks, game_tooltip_money = {}, 0
 
+local function format_unit_total(unit_price, quantity, color_fn)
+    if not unit_price then return nil end
+    local one = money.to_string(unit_price, nil, nil, color_fn)
+    if not quantity or quantity == 1 then
+        return one
+    end
+    return one .. ' / ' .. money.to_string(unit_price * quantity, nil, nil, color_fn)
+end
+
 function aux.handle.LOAD()
     settings = aux.character_data.tooltip
     do
@@ -51,7 +60,7 @@ end
 
 function M.extend_tooltip(tooltip, link, quantity)
     local item_id, suffix_id = info.parse_link(link)
-    quantity = IsShiftKeyDown() and quantity or 1
+    quantity = (quantity and quantity > 0) and quantity or 1
     local item_info = T.temp-info.item(item_id)
     if item_info then
         local distribution = disenchant.distribution(item_info.slot, item_info.quality, item_info.level, item_id)
@@ -72,7 +81,10 @@ function M.extend_tooltip(tooltip, link, quantity)
     if settings.merchant_buy then
         local _, price, limited = info.merchant_info(item_id)
         if price then
-            tooltip:AddLine('商店购买价格 ' .. (limited and '(limited): ' or ': ') .. money.to_string(price * quantity), {r=1, g=1, b=1})
+            local formatted = format_unit_total(price, quantity, aux.color.text.enabled)
+            if formatted then
+                tooltip:AddLine('商店购买价格 ' .. (limited and '(limited): ' or ': ') .. formatted, {r=1, g=1, b=1})
+            end
         end
     end
     if settings.merchant_sell then
@@ -89,8 +101,10 @@ function M.extend_tooltip(tooltip, link, quantity)
             vendor_sell_price = ShaguTweaks.SellValueDB[item_id] / charges
         end
         if vendor_sell_price and vendor_sell_price > 0 then
-            local label = IsShiftKeyDown() and '商店总价: ' or '商店单价: '
-            tooltip:AddLine(label .. money.to_string(vendor_sell_price * quantity), {r=1, g=1, b=1})
+            local formatted = format_unit_total(vendor_sell_price, quantity, aux.color.text.enabled)
+            if formatted then
+                tooltip:AddLine('商店出售价格: ' .. formatted, {r=1, g=1, b=1})
+            end
         end
     end
     local auctionable = not item_info or info.auctionable(T.temp-info.tooltip('link', item_info.itemstring), item_info.quality)
@@ -98,12 +112,24 @@ function M.extend_tooltip(tooltip, link, quantity)
     local value = history.value(item_key)
     if auctionable then
         if settings.value then
-            local label = IsShiftKeyDown() and '|cFFFFFFFF拍卖总价:|r ' or '|cFFFFFFFF拍卖单价:|r '
-            tooltip:AddLine(label .. (value and money.to_string(value * quantity) or UNKNOWN), {r=1, g=1, b=1})
+            local formatted = format_unit_total(value, quantity, aux.color.text.enabled)
+            if formatted then
+                tooltip:AddLine('|cFFFFFFFF拍卖价格:|r ' .. formatted, {r=1, g=1, b=1})
+            else
+                tooltip:AddLine('|cFFFFFFFF拍卖价格:|r ' .. UNKNOWN, {r=1, g=1, b=1})
+            end
         end
         if settings.daily then
             local market_value = history.market_value(item_key)
-            tooltip:AddLine('今日价格: ' .. (market_value and money.to_string(market_value * quantity) .. ' (' .. gui.percentage_historical(aux.round(market_value / value * 100)) .. ')' or UNKNOWN), {r=1, g=1, b=1})
+            if market_value then
+                local formatted = format_unit_total(market_value, quantity, aux.color.text.enabled)
+                local pct = value and gui.percentage_historical(aux.round(market_value / value * 100)) or nil
+                local text = '今日价格: ' .. formatted
+                if pct then text = text .. ' (' .. pct .. ')' end
+                tooltip:AddLine(text, {r=1, g=1, b=1})
+            else
+                tooltip:AddLine('今日价格: ' .. UNKNOWN, {r=1, g=1, b=1})
+            end
         end
     end
 
