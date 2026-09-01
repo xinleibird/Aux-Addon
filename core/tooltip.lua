@@ -89,7 +89,8 @@ function M.extend_tooltip(tooltip, link, quantity)
             vendor_sell_price = ShaguTweaks.SellValueDB[item_id] / charges
         end
         if vendor_sell_price and vendor_sell_price > 0 then
-            tooltip:AddLine('商店出售价格: ' .. money.to_string(vendor_sell_price * quantity), {r=1, g=1, b=1})
+            local label = IsShiftKeyDown() and '商店总价: ' or '商店单价: '
+            tooltip:AddLine(label .. money.to_string(vendor_sell_price * quantity), {r=1, g=1, b=1})
         end
     end
     local auctionable = not item_info or info.auctionable(T.temp-info.tooltip('link', item_info.itemstring), item_info.quality)
@@ -97,7 +98,8 @@ function M.extend_tooltip(tooltip, link, quantity)
     local value = history.value(item_key)
     if auctionable then
         if settings.value then
-            tooltip:AddLine('|cFFFFFFFF拍卖价格:|r ' .. (value and money.to_string(value * quantity) or UNKNOWN), {r=1, g=1, b=1})
+            local label = IsShiftKeyDown() and '|cFFFFFFFF拍卖总价:|r ' or '|cFFFFFFFF拍卖单价:|r '
+            tooltip:AddLine(label .. (value and money.to_string(value * quantity) or UNKNOWN), {r=1, g=1, b=1})
         end
         if settings.daily then
             local market_value = history.market_value(item_key)
