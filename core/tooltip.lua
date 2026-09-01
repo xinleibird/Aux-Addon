@@ -76,16 +76,20 @@ function M.extend_tooltip(tooltip, link, quantity)
         end
     end
     if settings.merchant_sell then
-        local price = info.merchant_info(item_id)
-        if price == nil and ShaguTweaks and ShaguTweaks.SellValueDB[item_id] ~= nil then
-            local charges = 1
-            if info.max_item_charges(item_id) ~= nil then 
-                charges = info.max_item_charges(item_id) 
-            end
-            price = ShaguTweaks.SellValueDB[item_id] / charges
+        local itemstring = 'item:' .. (item_id or 0) .. ':0:0:0'
+        local _, _, _, _, _, _, _, _, _, vendor_sell_price = GetItemInfo(itemstring)
+        if (not vendor_sell_price or vendor_sell_price <= 0) then
+            vendor_sell_price = info.merchant_info(item_id)
         end
-        if price ~= 0 then
-            tooltip:AddLine('商店出售价格: ' .. (price and money.to_string(price * quantity) or UNKNOWN), {r=1, g=1, b=1})
+        if (not vendor_sell_price or vendor_sell_price <= 0) and ShaguTweaks and ShaguTweaks.SellValueDB[item_id] ~= nil then
+            local charges = 1
+            if info.max_item_charges(item_id) ~= nil then
+                charges = info.max_item_charges(item_id)
+            end
+            vendor_sell_price = ShaguTweaks.SellValueDB[item_id] / charges
+        end
+        if vendor_sell_price and vendor_sell_price > 0 then
+            tooltip:AddLine('商店出售价格: ' .. money.to_string(vendor_sell_price * quantity), {r=1, g=1, b=1})
         end
     end
     local auctionable = not item_info or info.auctionable(T.temp-info.tooltip('link', item_info.itemstring), item_info.quality)
