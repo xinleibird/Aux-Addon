@@ -83,7 +83,7 @@ function M.extend_tooltip(tooltip, link, quantity)
         if price then
             local formatted = format_unit_total(price, quantity, aux.color.text.enabled)
             if formatted then
-                tooltip:AddLine('商店购买价格 ' .. (limited and '(limited): ' or ': ') .. formatted, {r=1, g=1, b=1})
+                tooltip:AddLine('买店价格 ' .. (limited and '(limited): ' or ': ') .. formatted, {r=1, g=1, b=1})
             end
         end
     end
@@ -103,7 +103,7 @@ function M.extend_tooltip(tooltip, link, quantity)
         if vendor_sell_price and vendor_sell_price > 0 then
             local formatted = format_unit_total(vendor_sell_price, quantity, aux.color.text.enabled)
             if formatted then
-                tooltip:AddLine('商店出售价格: ' .. formatted, {r=1, g=1, b=1})
+                tooltip:AddLine('卖店价格: ' .. formatted, {r=1, g=1, b=1})
             end
         end
     end
