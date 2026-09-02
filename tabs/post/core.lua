@@ -414,23 +414,19 @@ do
     local unit_price = aux.account_data.merchant_sell[id]
     local stack_count = stack_count_slider:GetValue()
     local stack_size = effective_stack_size()
+    local total_items = stack_size * stack_count
 
     -- unit_price is per-charge (charge items) or per-item (regular items)
-    -- stack_size is charge count (charge items) or items per stack (regular items)
-    -- So unit_price * stack_size = price per auction item in both cases
-    local item_price = unit_price and unit_price * stack_size or nil
-    local total_price = item_price and item_price * stack_count or nil
-    local formatted_item = item_price and money.to_string(item_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("?")
-    local formatted_total = total_price and money.to_string(total_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("无上拍价格")
-
-    local text
-    if stack_count == 1 then
-        text = formatted_item
-    else
-        text = formatted_item .. " / " .. formatted_total
+    -- Show per-unit price; append per-total price when stacking more than 1 item
+    local formatted_unit = unit_price and money.to_string(unit_price, nil, nil, aux.color.text.enabled) or aux.color.text.enabled("?")
+    local formatted_total
+    if unit_price and total_items > 1 then
+        formatted_total = money.to_string(unit_price * total_items, nil, nil, aux.color.text.enabled)
     end
 
-    vendor_price_label:SetText("商店售价：" .. text)
+    local text = formatted_total and (formatted_unit .. " / " .. formatted_total) or formatted_unit
+
+    vendor_price_label:SetText("卖店价格：" .. text)
 end
 
 
